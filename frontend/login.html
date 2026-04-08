@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC College | Login</title>
+    <link rel="stylesheet" href="css/style.css?v=2.0">
+    <style>
+        body { justify-content: center; align-items: center; min-height: 100vh; display: flex; background: #0f172a; }
+        .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-brand { text-align: center; font-size: 2rem; font-weight: 700; color: #3b82f6; margin-bottom: 2rem; }
+        .login-actions { margin-top: 2rem; }
+        .login-actions .btn { width: 100%; justify-content: center; padding: 0.75rem; }
+        .error-msg { color: #ef4444; font-size: 0.875rem; text-align: center; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-brand">
+            ABC College
+        </div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Role</label>
+                <select class="form-control" name="role" required>
+                    <option value="student">Student</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Username / Email</label>
+                <input type="text" class="form-control" name="username_or_email" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <div class="error-msg" id="errorMsg"></div>
+            <div class="login-actions">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Core App Logic -->
+    <script src="js/app_v2.js?v=2.0"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            const body = Object.fromEntries(fd.entries());
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.innerText = '';
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Login failed');
+                
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.role);
+                localStorage.setItem('student_id', data.student_id || '');
+                
+                if (data.role === 'student' && data.dob && data.dob.startsWith('2000-01-01')) {
+                    window.location.href = '/student-form.html';
+                } else {
+                    window.location.href = '/dashboard.html';
+                }
+            } catch (err) {
+                errorMsg.innerText = err.message;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC College | Dashboard</title>
+    <link rel="stylesheet" href="css/style.css?v=1.1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            ABC College
+        </div>
+        <ul class="nav-links" style="height: 100%; display: flex; flex-direction: column;">
+            <li class="nav-item active admin-only" data-target="dashboard">Dashboard</li>
+            <li class="nav-item admin-only" data-target="students">Students</li>
+            <li class="nav-item admin-only" data-target="departments">Departments</li>
+            <li class="nav-item" data-target="idcards">ID Cards</li>
+            <li class="nav-item" data-target="lostcards">Lost Cards</li>
+            <li class="nav-item text-danger" id="logoutBtn" style="margin-top: auto; cursor: pointer; padding: 0.75rem 1rem; color: var(--danger); font-weight: 500;">Logout</li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="header">
+                <h1>Dashboard Overview</h1>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Total Students</div>
+                    <div class="stat-value" id="stat-students">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Active ID Cards</div>
+                    <div class="stat-value" id="stat-active">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Pending Lost Reports</div>
+                    <div class="stat-value" id="stat-lost">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Total Fines Collected (₹)</div>
+                    <div class="stat-value" id="stat-fines">0</div>
+                </div>
+            </div>
+            <p>Welcome to the ABC College ID Card Management System. Use the navigation sidebar to manage students, issue new cards, and track lost reports.</p>
+        </section>
+
+        <!-- Students Section -->
+        <section id="students" class="section">
+            <div class="header">
+                <h1>Students</h1>
+                <button class="btn btn-primary admin-only" onclick="openModal('studentModal')">+ Add Student</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>DOB (Age)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <!-- Intentionally Empty, JS will populate -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Departments Section -->
+        <section id="departments" class="section">
+            <div class="header">
+                <h1>Departments</h1>
+                <button class="btn btn-primary admin-only" onclick="openModal('deptModal')">+ Add Department</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="deptTableBody">
+                        <!-- JS populated -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ID Cards Section -->
+        <section id="idcards" class="section">
+            <div class="header">
+                <h1>ID Cards</h1>
+                <button class="btn btn-primary admin-only" onclick="openModal('issueIdModal')">+ Issue ID Card</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Card ID</th>
+                            <th>Student</th>
+                            <th>Issue Date</th>
+                            <th>Exp Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="idCardTableBody">
+                        <!-- JS populated -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Lost Cards Section -->
+        <section id="lostcards" class="section">
+            <div class="header">
+                <h1>Lost Cards</h1>
+                <button class="btn btn-danger" onclick="openModal('reportLostModal')">! Report Lost Card</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lost ID</th>
+                            <th>Card ID</th>
+                            <th>Student</th>
+                            <th>Report Date</th>
+                            <th>Fine (₹)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lostCardTableBody">
+                        <!-- JS populated -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modals -->
+    <!-- Add Student Modal -->
+    <div class="modal-overlay" id="studentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Add Student</h2>
+                <button class="modal-close" onclick="closeModal('studentModal')">&times;</button>
+            </div>
+            <form id="studentForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" name="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" name="last_name" required>
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" class="form-control" name="dob" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <select class="form-control" name="dept_id" id="studentDeptSelect" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Upload Photo</label>
+                    <input type="file" class="form-control" name="photo" accept="image/*">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('studentModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Issue ID Modal -->
+    <div class="modal-overlay" id="issueIdModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Issue ID Card</h2>
+                <button class="modal-close" onclick="closeModal('issueIdModal')">&times;</button>
+            </div>
+            <form id="issueIdForm">
+                <div class="form-group">
+                    <label>Select Student (No Active ID)</label>
+                    <select class="form-control" name="student_id" id="issueStudentSelect" required></select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('issueIdModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Issue Card</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Print ID Modal -->
+    <div class="modal-overlay" id="printPreviewModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>ID Card Preview</h2>
+                <button class="modal-close" onclick="closeModal('printPreviewModal')">&times;</button>
+            </div>
+            <div id="print-area">
+                <div class="id-card-preview" id="cardCanvas">
+                    <!-- JS renders this -->
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('printPreviewModal')">Close</button>
+            <div class="form-actions" style="justify-content: center; margin-top: 2rem; gap: 1rem;">
+                <button class="btn btn-primary" onclick="downloadPDF()">Download PDF</button>
+                <button class="btn btn-secondary" onclick="downloadImage()">Download as Image (PNG)</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Department Modal -->
+    <div class="modal-overlay" id="deptModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Add Department</h2>
+                <button class="modal-close" onclick="closeModal('deptModal')">&times;</button>
+            </div>
+            <form id="deptForm">
+                <div class="form-group">
+                    <label>Department Name</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="description"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('deptModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Department</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Report Lost Modal -->
+    <div class="modal-overlay" id="reportLostModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Report Lost Card</h2>
+                <button class="modal-close" onclick="closeModal('reportLostModal')">&times;</button>
+            </div>
+            <form id="reportLostForm">
+                <div class="form-group">
+                    <label>Select Active Card to Report</label>
+                    <select class="form-control" name="card_id" id="reportLostCardSelect" required></select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('reportLostModal')">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Report Lost</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JS Logic -->
+    <script src="js/app_v2.js?v=2.0"></script>
+</body>
+</html>

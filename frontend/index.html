@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC College | ID Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="landing-page">
+    <nav class="landing-nav">
+        <div class="landing-brand">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            ABC College
+        </div>
+        <div>
+            <a href="login.html" class="btn btn-secondary">Login Portal</a>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="college-logo-large">
+             <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+        </div>
+        <h1 class="hero-h1">ABC College ID Management System</h1>
+        <p class="hero-p">A modern, secure, and professional way to handle student identification, department tracking, and automated ID issuance for the next generation of campus life.</p>
+        
+        <div style="display: flex; gap: 1.5rem; justify-content: center;">
+            <a href="login.html" class="btn btn-primary btn-large">Join as Student</a>
+            <a href="login.html" class="btn btn-secondary btn-large" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.2);">Admin Portal</a>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <span class="feature-icon">🛡️</span>
+                <h3 class="feature-h3">Secure Identity</h3>
+                <p class="feature-p">Encrypted identity tracking and automated expiration cycles.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">📁</span>
+                <h3 class="feature-h3">Easy Management</h3>
+                <p class="feature-p">Centralized department and student database for administrative ease.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">📄</span>
+                <h3 class="feature-h3">PDF Generation</h3>
+                <p class="feature-p">Instant, printable high-quality ID card exports in PDF format.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">⚡</span>
+                <h3 class="feature-h3">Quick Reporting</h3>
+                <p class="feature-p">Report lost cards instantly with integrated fine management.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer style="position: absolute; bottom: 2rem; color: rgba(255,255,255,0.5); font-size: 0.875rem;">
+        &copy; 2026 ABC College. All rights reserved.
+    </footer>
+
+    <script src="js/app_v2.js?v=2.0"></script>
+    <script>
+        if (localStorage.getItem('token')) {
+            window.location.href = '/dashboard.html';
+        }
+    </script>
+</body>
+</html>
